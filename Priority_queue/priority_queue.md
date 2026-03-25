@@ -212,3 +212,190 @@ int main()
 
 ---
 
+
+
+---
+
+# 🔷 1. Min Heap with Pair (ascending order)
+
+## ✅ Code:
+
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> q;
+
+    q.push({1, 2});
+    q.push({2, 3});
+    q.push({2, 4});
+    q.push({4, 4});
+    q.push({3, 4});
+
+    while(!q.empty()) {
+        cout << q.top().first << " " << q.top().second << endl;
+        q.pop();
+    }
+
+    cout << q.size() << endl;
+
+    return 0;
+}
+```
+
+---
+
+## 🧠 ব্যাখ্যা (বাংলায়):
+
+### 👉 1. এই লাইনের মানে:
+
+```cpp
+priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> q;
+```
+
+* `pair<int,int>` → দুইটা মান (first, second)
+* `greater<>` → **min heap** (ছোট আগে আসবে)
+
+---
+
+### 👉 2. push করা:
+
+```cpp
+q.push({1, 2});
+q.push({2, 3});
+q.push({2, 4});
+q.push({4, 4});
+q.push({3, 4});
+```
+
+👉 pair গুলো compare হবে এভাবে:
+
+1. আগে `first`
+2. যদি equal হয় → `second`
+
+---
+
+### 👉 3. Sorting order:
+
+```
+(1,2)
+(2,3)
+(2,4)
+(3,4)
+(4,4)
+```
+
+---
+
+### 👉 4. Output:
+
+```
+1 2
+2 3
+2 4
+3 4
+4 4
+0
+```
+
+---
+
+# 🔷 2. Default Priority Queue (Max Heap)
+
+## ✅ Code:
+
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    priority_queue<pair<int,int>> q;
+
+    q.push({1, 2});
+    q.push({2, 3});
+    q.push({2, 4});
+    q.push({4, 4});
+    q.push({3, 4});
+
+    while(!q.empty()) {
+        cout << q.top().first << " " << q.top().second << endl;
+        q.pop();
+    }
+
+    cout << q.size() << endl;
+
+    return 0;
+}
+```
+
+---
+
+## 🧠 ব্যাখ্যা:
+
+👉 এখানে `greater<>` নেই
+➡️ তাই এটা **max heap**
+
+---
+
+### 👉 Sorting order:
+
+```
+(4,4)
+(3,4)
+(2,4)
+(2,3)
+(1,2)
+```
+
+---
+
+### 👉 Output:
+
+```
+4 4
+3 4
+2 4
+2 3
+1 2
+0
+```
+
+---
+
+# 🔷 🔥 Important Concept (খুব জরুরি)
+
+## 👉 pair compare rule:
+
+```
+(a,b) < (c,d)
+```
+
+➡️ যদি:
+
+* a < c → ছোট
+* a == c → b < d
+
+---
+
+# 🔷 🎯 Shortcut
+
+| Type     | Code                            | Behavior |
+| -------- | ------------------------------- | -------- |
+| Max Heap | `priority_queue<pair<int,int>>` | বড় আগে   |
+| Min Heap | `greater<pair<int,int>>`        | ছোট আগে  |
+
+---
+
+# 🔷 💡 Real Life Use
+
+👉 এই ধরনের pair priority queue ব্যবহার হয়:
+
+* Dijkstra Algorithm
+* Graph problems
+* Scheduling
+
+---
+
