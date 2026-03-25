@@ -399,3 +399,176 @@ int main()
 
 ---
 
+
+---
+
+# 🔷 🧩 Problem: **Contest Ranking**
+
+## 📄 Problem Statement
+
+একটি প্রোগ্রামিং কনটেস্টে `n` জন প্রতিযোগী অংশগ্রহণ করেছে।
+
+প্রতিটি প্রতিযোগীর জন্য দুটি তথ্য দেওয়া আছে:
+
+* `solved` → সে কতটি সমস্যা সমাধান করেছে
+* `penalty` → তার মোট penalty (সময়)
+
+তোমার কাজ হলো প্রতিযোগীদের এমনভাবে সাজানো (ranking করা):
+
+---
+
+## 🏆 Ranking Rules:
+
+1. যে **বেশি সমস্যা solve করেছে**, সে আগে থাকবে
+2. যদি solve সংখ্যা সমান হয়, তাহলে যার **penalty কম**, সে আগে থাকবে
+
+---
+
+## 📥 Input
+
+* প্রথম লাইনে একটি সংখ্যা `n`
+* পরবর্তী `n` লাইনে দুটি সংখ্যা:
+
+  * `solved`
+  * `penalty`
+
+---
+
+## 📤 Output
+
+* প্রতিটি লাইনে sorted order অনুযায়ী `solved penalty` print করো
+
+---
+
+## 📌 Example
+
+### Input:
+
+```
+5
+1 2
+2 3
+2 4
+4 4
+3 4
+```
+
+### Output:
+
+```
+4 4
+3 4
+2 3
+2 4
+1 2
+```
+
+---
+
+# 🔷 💡 Solution Idea
+
+👉 আমাদের rule:
+
+* solved → বেশি আগে (descending)
+* penalty → কম আগে (ascending)
+
+👉 কিন্তু `priority_queue` default:
+
+* বড় আগে আনে (max heap)
+
+👉 তাই trick:
+
+* penalty কে negative করে push করি
+
+---
+
+# 🔷 ✅ Code (Priority Queue Trick)
+
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    priority_queue<pair<int,int>> q;
+
+    for(int i = 0; i < n; i++) {
+        int solved, penalty;
+        cin >> solved >> penalty;
+
+        q.push({solved, -penalty}); // trick
+    }
+
+    while(!q.empty()) {
+        cout << q.top().first << " " << -q.top().second << endl;
+        q.pop();
+    }
+
+    return 0;
+}
+```
+
+---
+
+# 🔷 🧠 Explanation (বাংলায়)
+
+### 👉 কেন `-penalty`?
+
+* আমরা চাই penalty কম হলে আগে আসুক
+* কিন্তু max heap বড় মান আগে নেয়
+* তাই penalty কে negative করি
+
+✔ ফলে:
+
+* ছোট penalty → বড় negative → আগে আসে
+
+---
+
+# 🔷 🔥 Alternative Solution (Best & Clean)
+
+👉 comparator দিয়ে solve করা (recommended)
+
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    vector<pair<int,int>> v;
+
+    for(int i = 0; i < n; i++) {
+        int solved, penalty;
+        cin >> solved >> penalty;
+        v.push_back({solved, penalty});
+    }
+
+    sort(v.begin(), v.end(), [](pair<int,int> a, pair<int,int> b) {
+        if(a.first == b.first)
+            return a.second < b.second; // কম penalty আগে
+        return a.first > b.first; // বেশি solved আগে
+    });
+
+    for(auto p : v) {
+        cout << p.first << " " << p.second << endl;
+    }
+
+    return 0;
+}
+```
+
+---
+
+# 🔷 🎯 Key Takeaway
+
+👉 Codeforces ranking logic:
+
+* **More solved → higher rank**
+* **Same solved → lower penalty → higher rank**
+
+---
